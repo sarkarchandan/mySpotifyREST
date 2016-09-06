@@ -102,5 +102,4 @@ public class ArtistLookup {
         return artistResponse;
     }
 
-
 }

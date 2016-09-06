@@ -1,6 +1,7 @@
 package de.uniba.myREST.service;
 
 import de.uniba.myREST.engine.ArtistLookup;
+import de.uniba.myREST.engine.TrackLookup;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -24,7 +25,7 @@ public class SpotifyService {
     private static Logger loggerSpotifyService = Logger.getLogger(SpotifyService.class.getName());
 
     @GET
-    @Path("/artist")
+    @Path("/artists")
     @Consumes(TEXT_PLAIN)
     @Produces(APPLICATION_JSON)
     public Response getSpotifyArtistData(@QueryParam("artistName") String artistName){
@@ -41,5 +42,26 @@ public class SpotifyService {
         return Response.ok(ArtistLookup.getArtistFromName(artistName), MediaType.APPLICATION_JSON).build();
 
     }
+
+
+    @GET
+    @Path("/tracks")
+    @Consumes(TEXT_PLAIN)
+    @Produces(APPLICATION_JSON)
+    public Response getSpotifyTrackData(@QueryParam("trackName") String trackName){
+
+        loggerSpotifyService.setLevel(Level.ALL);
+        loggerSpotifyService.info("Class SpotifyService/Method getSpotifyTrackData: Start Logging");
+
+        if(trackName==null || trackName.equals("")){
+            return Response.status(Response.Status.BAD_REQUEST).entity("Bad Request").build();
+        }
+
+        return Response.ok(TrackLookup.getTrackIDFromName(trackName),MediaType.APPLICATION_JSON).build();
+
+
+    }
+
+
 
 }

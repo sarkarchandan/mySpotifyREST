@@ -2,9 +2,15 @@ package de.uniba.myREST.engine;
 
 import com.wrapper.spotify.Api;
 import com.wrapper.spotify.methods.TrackSearchRequest;
-import com.wrapper.spotify.models.Page;
-import com.wrapper.spotify.models.Track;
+import com.wrapper.spotify.models.*;
+import com.wrapper.spotify.models.Image;
+import de.uniba.myREST.response.ImageResponse;
+import de.uniba.myREST.response.SimpleAlbumResponse;
+import de.uniba.myREST.response.SimpleArtistResponse;
+import de.uniba.myREST.response.TrackResponse;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,12 +32,31 @@ public class TrackLookup {
      * @param trackName {String}
      * @return trackID {String}
      */
-    public static String getTrackIDFromName(String trackName){
+    public static TrackResponse getTrackIDFromName(String trackName){
 
         loggerTrackLookup.setLevel(Level.ALL);
         loggerTrackLookup.info("Class TrackLookup/Method getTrackIDFromName: Start Logging");
 
-        String trackID = new String();
+
+        /*
+         * Declaring reference for TrackResponse type
+         * Declaring reference for SimpleAlbumResponse. This is required to construct the TrackResponse object. Refer TrackResponse datatype definition
+         * Declaring reference for SimpleArtistResponse.
+         * Declaring reference for ImageResponse.
+         * Declaring list<String> of AvailableMarkets of each track.
+         * Declaring list<String> of AvailableMarkets for SimpleAlbum of each Track. This is required to construct the SimpleAlbumResponse object.
+         * Declaring list<SimpleArtistResponse>. List of SimpleArtistResponse is required to construct TrackResponse object. Refer TrackResponse datatype definition
+         * declaring list<ImageResponse>. List of ImageResponse is required to construct the SimpleAlbumResponse object.
+         */
+        TrackResponse trackResponse=null;
+        SimpleAlbumResponse simpleAlbumResponse;
+        SimpleArtistResponse simpleArtistResponse;
+        ImageResponse imageResponse;
+        List<String> listOfTrackAvailableMarkets = new ArrayList<>();
+        List<String> listOfSimpleAlbumAvailableMarket = new ArrayList<>();
+        List<SimpleArtistResponse> listOfSimpleArtistResponse = new ArrayList<>();
+        List<ImageResponse> listOfSimpleAlbumImages = new ArrayList<>();
+
 
 
         /*
@@ -55,7 +80,55 @@ public class TrackLookup {
 
                 if(searchTracks.size()!=0) {
                     for (Track eachTrack : searchTracks) {
-                        trackID = eachTrack.getId();
+                        //////////////////////////////
+
+                        for(Image imageOfSimpleAlbum: eachTrack.getAlbum().getImages()){
+                            listOfSimpleAlbumImages.add(new ImageResponse(
+                                    imageOfSimpleAlbum.getHeight(),
+                                    imageOfSimpleAlbum.getUrl(),
+                                    imageOfSimpleAlbum.getWidth()));
+                        }
+                        for (String eachSimpleAlbumAvailableMarket: eachTrack.getAlbum().getAvailableMarkets()){
+                            listOfSimpleAlbumAvailableMarket.add(eachSimpleAlbumAvailableMarket);
+                        }
+
+
+                        simpleAlbumResponse = new SimpleAlbumResponse(
+                                eachTrack.getAlbum().getHref(),
+                                eachTrack.getAlbum().getId(),
+                                listOfSimpleAlbumImages,
+                                eachTrack.getAlbum().getName(),
+                                eachTrack.getAlbum().getUri(),
+                                listOfSimpleAlbumAvailableMarket
+                        );
+
+                        for (SimpleArtist eachSimpleArtist: eachTrack.getArtists()){
+                            listOfSimpleArtistResponse.add(new SimpleArtistResponse(
+                                    eachSimpleArtist.getHref(),
+                                    eachSimpleArtist.getId(),
+                                    eachSimpleArtist.getName(),
+                                    eachSimpleArtist.getUri()));
+                        }
+
+                        for (String eachTrackAvailableMarket: eachTrack.getAvailableMarkets()){
+                            listOfTrackAvailableMarkets.add(eachTrackAvailableMarket);
+                        }
+
+                        trackResponse = new TrackResponse(
+                                simpleAlbumResponse,
+                                listOfSimpleArtistResponse,
+                                listOfTrackAvailableMarkets,
+                                eachTrack.getDiscNumber(),
+                                eachTrack.getDuration(),
+                                eachTrack.getHref(),
+                                eachTrack.getId(),
+                                eachTrack.getName(),
+                                eachTrack.getPopularity(),
+                                eachTrack.getPreviewUrl(),
+                                eachTrack.getTrackNumber(),
+                                eachTrack.getUri()
+                        );
+
                     }
                 }else{loggerTrackLookup.log(Level.WARNING,"No Matching Track found: Check the Parameter");}
 
@@ -67,7 +140,7 @@ public class TrackLookup {
         }
 
         loggerTrackLookup.info("Class TrackLookup/Method getTrackIDFromName: Done Logging");
-        return trackID;
+        return trackResponse;
 
     }
 
