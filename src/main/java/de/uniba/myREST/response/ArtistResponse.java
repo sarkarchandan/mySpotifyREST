@@ -1,5 +1,6 @@
 package de.uniba.myREST.response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ public class ArtistResponse {
     private String artistName;
     private int artistPopularity;
     private String artistUri;
+    private List<Link> resourcelinks = new ArrayList<>();
 
     /*
      * Constructors
@@ -92,6 +94,26 @@ public class ArtistResponse {
 
     public void setArtistUri(String artistUri) {
         this.artistUri = artistUri;
+    }
+
+    public List<Link> getResourcelinks() {
+        return resourcelinks;
+    }
+
+    public void setResourcelinks(List<Link> resourcelinks) {
+        this.resourcelinks = resourcelinks;
+    }
+
+    /**
+     * Creates the Link for a Resource
+     * @param resourceLink
+     * @param resourceRelation
+     */
+    public void addLink(String resourceLink, String resourceRelation){
+        Link linkObject = new Link();
+        linkObject.setResourceLink(resourceLink);
+        linkObject.setResourceRelation(resourceRelation);
+        resourcelinks.add(linkObject);
     }
 
 }

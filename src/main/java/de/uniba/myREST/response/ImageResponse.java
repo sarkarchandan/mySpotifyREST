@@ -5,6 +5,7 @@ package de.uniba.myREST.response;
  * This class will be used to model all Images for all searches
  * Created by chandan on 06.09.16.
  */
+
 public class ImageResponse {
 
     private int imageHeight;

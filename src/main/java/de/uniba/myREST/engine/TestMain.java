@@ -23,6 +23,7 @@ public class TestMain {
         //System.out.println(TrackLookup.getTrackIDFromName(""));
 
 
+        /*
         for(SimpleTrackResponse simpleTrackResponse: TopTracksLookUp.getTopFiveTracksforAnArtist("5f5B8Zd0xuvmcDin3oK76F")){
 
 
@@ -34,6 +35,11 @@ public class TestMain {
             System.out.println("################");
 
         }
+        */
+        System.out.println(TopTracksLookUp.getTopFiveTracksforAnArtist("2ye2Wgw4gimLv2eAKyk1NB"));
+
+
+        System.out.println(ArtistLookup.getArtistFromName("Metallica").getArtistId().toString());
 
 
 

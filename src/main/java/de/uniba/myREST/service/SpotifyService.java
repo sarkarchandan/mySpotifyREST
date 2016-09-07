@@ -4,12 +4,12 @@ import de.uniba.myREST.engine.AlbumLookup;
 import de.uniba.myREST.engine.ArtistLookup;
 import de.uniba.myREST.engine.TopTracksLookUp;
 import de.uniba.myREST.engine.TrackLookup;
+import de.uniba.myREST.response.ArtistResponse;
 import de.uniba.myREST.response.SimpleTrackResponse;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,13 +33,14 @@ public class SpotifyService {
     /**
      * Returns a specific artist details serialized as JSON type
      * @param artistName {String}
-     * @return {Response}
+     * @param uriInfo {UriInfo}
+     * @return Response
      */
     @GET
     @Path("/artists")
     @Consumes(TEXT_PLAIN)
     @Produces(APPLICATION_JSON)
-    public Response getSpotifyArtistData(@QueryParam("artistName") String artistName){
+    public Response getSpotifyArtistData(@QueryParam("artistName") String artistName, @Context UriInfo uriInfo){
 
         loggerSpotifyService.setLevel(Level.ALL);
         loggerSpotifyService.info("Class SpotifyService/Method getSpotifyArtistData: Start Logging");
@@ -50,8 +51,39 @@ public class SpotifyService {
             return Response.status(Response.Status.BAD_REQUEST).entity("Bad Request").build();
         }
 
+        /*
+         * Declaring ArtistResponse object
+         */
+        ArtistResponse response = ArtistLookup.getArtistFromName(artistName);
+
+        /*
+         * Building uri link to self with the Context UriInfo
+         */
+        String selfUri = uriInfo.getBaseUriBuilder()
+                .path(SpotifyService.class)
+                .path("/artists")
+                .queryParam("artistName",artistName)
+                .build().toString();
+
+        //Adding the Uri link to the list of links//
+        response.addLink(selfUri,"self");
+
+
+        /*
+         * Building uri link to the top 5 tracks of the artist with Context UriInfo
+         */
+        String topTrackUri = uriInfo.getBaseUriBuilder()
+                .path(SpotifyService.class)
+                .path("/topTracks")
+                .queryParam("artistID",ArtistLookup.getArtistFromName(artistName).getArtistId().toString())
+                .build().toString();
+        //Adding the Uri link to the list of links//
+        response.addLink(topTrackUri,"topFiveTracksForArtist");
+
+
+
         loggerSpotifyService.info("Class SpotifyService/Method getSpotifyArtistData: Done Logging");
-        return Response.ok(ArtistLookup.getArtistFromName(artistName), MediaType.APPLICATION_JSON).build();
+        return Response.ok(response, MediaType.APPLICATION_JSON).build();
 
     }
 
