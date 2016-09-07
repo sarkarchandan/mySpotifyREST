@@ -32,7 +32,7 @@ public class TrackLookup {
      * @param trackName {String}
      * @return trackID {String}
      */
-    public static TrackResponse getTrackIDFromName(String trackName){
+    public static TrackResponse getTrackFromName(String trackName){
 
         loggerTrackLookup.setLevel(Level.ALL);
         loggerTrackLookup.info("Class TrackLookup/Method getTrackIDFromName: Start Logging");
@@ -40,23 +40,16 @@ public class TrackLookup {
 
         /*
          * Declaring reference for TrackResponse type
-         * Declaring reference for SimpleAlbumResponse. This is required to construct the TrackResponse object. Refer TrackResponse datatype definition
-         * Declaring reference for SimpleArtistResponse.
-         * Declaring reference for ImageResponse.
-         * Declaring list<String> of AvailableMarkets of each track.
+         * Declaring reference for SimpleAlbumResponse. SimpleAlbumResponse custom datatype is required to construct the TrackResponse object. Refer TrackResponse datatype definition
          * Declaring list<String> of AvailableMarkets for SimpleAlbum of each Track. This is required to construct the SimpleAlbumResponse object.
          * Declaring list<SimpleArtistResponse>. List of SimpleArtistResponse is required to construct TrackResponse object. Refer TrackResponse datatype definition
-         * declaring list<ImageResponse>. List of ImageResponse is required to construct the SimpleAlbumResponse object.
+         * declaring list<ImageResponse>. List of ImageResponse is required to construct the SimpleAlbumResponse object. Refer SimpleAlbumResponse datatype definition
          */
         TrackResponse trackResponse=null;
         SimpleAlbumResponse simpleAlbumResponse;
-        SimpleArtistResponse simpleArtistResponse;
-        ImageResponse imageResponse;
-        List<String> listOfTrackAvailableMarkets = new ArrayList<>();
         List<String> listOfSimpleAlbumAvailableMarket = new ArrayList<>();
         List<SimpleArtistResponse> listOfSimpleArtistResponse = new ArrayList<>();
         List<ImageResponse> listOfSimpleAlbumImages = new ArrayList<>();
-
 
 
         /*
@@ -80,19 +73,28 @@ public class TrackLookup {
 
                 if(searchTracks.size()!=0) {
                     for (Track eachTrack : searchTracks) {
-                        //////////////////////////////
 
+                        /*
+                         * Iterating through all images of SimpleAlbum for each track to construct the List of ImageResponse objects.
+                         * This is required to construct the SimpleAlbum datatype for a specific track
+                        */
                         for(Image imageOfSimpleAlbum: eachTrack.getAlbum().getImages()){
                             listOfSimpleAlbumImages.add(new ImageResponse(
                                     imageOfSimpleAlbum.getHeight(),
                                     imageOfSimpleAlbum.getUrl(),
                                     imageOfSimpleAlbum.getWidth()));
                         }
+                        /*
+                         * Iterating through all Available markets of the album of each track to add each AvailableMarket data for the SimpleAlbum to a List<String>.
+                         * This list is required to construct the SimpleAlbum datatype for a specific track
+                         */
                         for (String eachSimpleAlbumAvailableMarket: eachTrack.getAlbum().getAvailableMarkets()){
                             listOfSimpleAlbumAvailableMarket.add(eachSimpleAlbumAvailableMarket);
                         }
 
-
+                        /*
+                         * Constructing the SimpleAlbum object which is one of the fields for TrackResponse object
+                         */
                         simpleAlbumResponse = new SimpleAlbumResponse(
                                 eachTrack.getAlbum().getHref(),
                                 eachTrack.getAlbum().getId(),
@@ -102,6 +104,10 @@ public class TrackLookup {
                                 listOfSimpleAlbumAvailableMarket
                         );
 
+                        /*
+                         * Iterating through each SimpleArtist to constructing the List of SimpleArtistResponse objects.
+                         * List<SimpleArtistResponse> is required to construct the TrackResponse object for a specific track.
+                         */
                         for (SimpleArtist eachSimpleArtist: eachTrack.getArtists()){
                             listOfSimpleArtistResponse.add(new SimpleArtistResponse(
                                     eachSimpleArtist.getHref(),
@@ -110,14 +116,13 @@ public class TrackLookup {
                                     eachSimpleArtist.getUri()));
                         }
 
-                        for (String eachTrackAvailableMarket: eachTrack.getAvailableMarkets()){
-                            listOfTrackAvailableMarkets.add(eachTrackAvailableMarket);
-                        }
-
+                        /*
+                         * Constructing TrackResponse object with all it's required data members
+                         * This is the final TrackResponse object which will be serialized to JSON type.
+                         */
                         trackResponse = new TrackResponse(
                                 simpleAlbumResponse,
                                 listOfSimpleArtistResponse,
-                                listOfTrackAvailableMarkets,
                                 eachTrack.getDiscNumber(),
                                 eachTrack.getDuration(),
                                 eachTrack.getHref(),
@@ -126,9 +131,7 @@ public class TrackLookup {
                                 eachTrack.getPopularity(),
                                 eachTrack.getPreviewUrl(),
                                 eachTrack.getTrackNumber(),
-                                eachTrack.getUri()
-                        );
-
+                                eachTrack.getUri());
                     }
                 }else{loggerTrackLookup.log(Level.WARNING,"No Matching Track found: Check the Parameter");}
 

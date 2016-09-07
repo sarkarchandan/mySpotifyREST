@@ -3,7 +3,8 @@ package de.uniba.myREST.response;
 import java.util.List;
 
 /**
- * Creates custom datatype for SimpleAlbum
+ * Creates custom datatype for SimpleAlbumResponse
+ * This class will be used to model SimpleAlbum for album search by name
  * Created by chandan on 06.09.16.
  */
 public class SimpleAlbumResponse {
@@ -16,7 +17,7 @@ public class SimpleAlbumResponse {
     private List<String> simpleAlbumAvailableMarkets;
 
     /*
-     * Constructots
+     * Constructors
      */
     public SimpleAlbumResponse() {
     }

@@ -3,6 +3,7 @@ package de.uniba.myREST.engine;
 import com.wrapper.spotify.exceptions.WebApiException;
 import com.wrapper.spotify.models.*;
 import de.uniba.myREST.response.ImageResponse;
+import de.uniba.myREST.response.SimpleTrackResponse;
 
 import java.io.IOException;
 
@@ -21,12 +22,19 @@ public class TestMain {
 
         //System.out.println(TrackLookup.getTrackIDFromName(""));
 
-        for (ImageResponse imageResponse: ArtistLookup.getArtistFromName("Linkin Park").getArtistImages()){
-            System.out.println(imageResponse.getImageHeight());
-            System.out.println(imageResponse.getImageUrl());
-            System.out.println(imageResponse.getImageWidth());
+
+        for(SimpleTrackResponse simpleTrackResponse: TopTracksLookUp.getTopFiveTracksforAnArtist("5f5B8Zd0xuvmcDin3oK76F")){
+
+
+            System.out.println(simpleTrackResponse.getTrackAlbum().getAlbumType());
+            System.out.println(simpleTrackResponse.getTrackAlbum().getAlbumHref());
+            System.out.println(simpleTrackResponse.getTrackAlbum().getAlbumName());
+            System.out.println(simpleTrackResponse.getTrackPopularity());
+            System.out.println(simpleTrackResponse.getTrackPreviewUrl());
+            System.out.println("################");
+
         }
-        //System.out.print(ArtistLookup.getArtistFromName("Linkin Park").getArtistPopularity());
+
 
 
     }

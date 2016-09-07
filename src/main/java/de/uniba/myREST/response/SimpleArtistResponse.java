@@ -1,6 +1,8 @@
 package de.uniba.myREST.response;
 
 /**
+ * Creates custom datatype for SimpleArtistResponse
+ * This class will be used to model the each artist object for a given track
  * Created by chandan on 06.09.16.
  */
 public class SimpleArtistResponse {

@@ -68,18 +68,27 @@ public class ArtistLookup {
 
                 if(searchArtists.size()!=0) {
 
-                    /*Iterating to fetch the single artist object from the search result*/
+                    /*
+                     * Iterating to fetch the single artist object from the search result
+                     */
                     for (Artist artist : searchArtists) {
 
-                        /*Iterating within the list of Images of the artist to add them to List of ImageResponsetype objects*/
+                        /*
+                         * Iterating within the list of Images of the artist to add them to List of ImageResponsetype objects
+                         */
                         for(Image artistImageParameter: artist.getImages()) {
                             artistImageResponse.add(new ImageResponse(artistImageParameter.getHeight(), artistImageParameter.getUrl(), artistImageParameter.getWidth()));
                         }
-                        /*Iterating within the Geners of the artist to add them to List of Strings*/
+                        /*
+                         * Iterating within the Geners of the artist to add them to List of Strings
+                         */
                         for(String artistGenreParameter: artist.getGenres()){
                             genreList.add(artistGenreParameter);
                         }
-                        /*Constructing the ArtistResponse type object*/
+                        /*
+                         * Constructing the ArtistResponse type object
+                         * This is the final ArtistResponse object which will be serialized to JSON type.
+                         */
                         artistResponse = new ArtistResponse(genreList,
                                 artist.getHref(),
                                 artist.getId(),

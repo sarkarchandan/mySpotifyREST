@@ -3,7 +3,8 @@ package de.uniba.myREST.response;
 import java.util.List;
 
 /**
- * Creates custom datatype for Artists
+ * Creates custom datatype for ArtistResponse
+ * This class will be used to model the response object for all artist search
  * Created by chandan on 06.09.16.
  */
 public class ArtistResponse {
@@ -33,7 +34,7 @@ public class ArtistResponse {
         this.artistUri = artistUri;
     }
 
-    /*
+/*
      * Getter and Setter methods for instance variables
      */
 
@@ -92,4 +93,5 @@ public class ArtistResponse {
     public void setArtistUri(String artistUri) {
         this.artistUri = artistUri;
     }
+
 }

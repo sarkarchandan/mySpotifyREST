@@ -4,18 +4,18 @@ import java.util.List;
 
 /**
  * Creates custom datatype for Tracks
+ * This class will be used to model the response object for track search by name
  * Created by chandan on 06.09.16.
  */
 public class TrackResponse {
 
     private SimpleAlbumResponse trackAlbum;
     private List<SimpleArtistResponse> trackArtists;
-    private List<String> trackAvailableMarkets;
     private int trackDiscNumber;
-    private int trackDuration;
+    private int trackDurationInSeconds;
     private String trackHref;
     private String trackId;
-    private String tracName;
+    private String trackName;
     private int trackPopularity;
     private String trackPreviewUrl;
     private int trackNumber;
@@ -28,15 +28,14 @@ public class TrackResponse {
     public TrackResponse() {
     }
 
-    public TrackResponse(SimpleAlbumResponse trackAlbum, List<SimpleArtistResponse> trackArtists, List<String> trackAvailableMarkets, int trackDiscNumber, int trackDuration, String trackHref, String trackId, String tracName, int trackPopularity, String trackPreviewUrl, int trackNumber, String trackUri) {
+    public TrackResponse(SimpleAlbumResponse trackAlbum, List<SimpleArtistResponse> trackArtists, int trackDiscNumber, int trackDurationInSeconds, String trackHref, String trackId, String trackName, int trackPopularity, String trackPreviewUrl, int trackNumber, String trackUri) {
         this.trackAlbum = trackAlbum;
         this.trackArtists = trackArtists;
-        this.trackAvailableMarkets = trackAvailableMarkets;
         this.trackDiscNumber = trackDiscNumber;
-        this.trackDuration = trackDuration;
+        this.trackDurationInSeconds = trackDurationInSeconds;
         this.trackHref = trackHref;
         this.trackId = trackId;
-        this.tracName = tracName;
+        this.trackName = trackName;
         this.trackPopularity = trackPopularity;
         this.trackPreviewUrl = trackPreviewUrl;
         this.trackNumber = trackNumber;
@@ -62,14 +61,6 @@ public class TrackResponse {
         this.trackArtists = trackArtists;
     }
 
-    public List<String> getTrackAvailableMarkets() {
-        return trackAvailableMarkets;
-    }
-
-    public void setTrackAvailableMarkets(List<String> trackAvailableMarkets) {
-        this.trackAvailableMarkets = trackAvailableMarkets;
-    }
-
     public int getTrackDiscNumber() {
         return trackDiscNumber;
     }
@@ -78,12 +69,12 @@ public class TrackResponse {
         this.trackDiscNumber = trackDiscNumber;
     }
 
-    public int getTrackDuration() {
-        return trackDuration;
+    public int getTrackDurationInSeconds() {
+        return trackDurationInSeconds;
     }
 
-    public void setTrackDuration(int trackDuration) {
-        this.trackDuration = trackDuration;
+    public void setTrackDurationInSeconds(int trackDurationInSeconds) {
+        this.trackDurationInSeconds = trackDurationInSeconds;
     }
 
     public String getTrackHref() {
@@ -102,12 +93,12 @@ public class TrackResponse {
         this.trackId = trackId;
     }
 
-    public String getTracName() {
-        return tracName;
+    public String getTrackName() {
+        return trackName;
     }
 
-    public void setTracName(String tracName) {
-        this.tracName = tracName;
+    public void setTrackName(String trackName) {
+        this.trackName = trackName;
     }
 
     public int getTrackPopularity() {
