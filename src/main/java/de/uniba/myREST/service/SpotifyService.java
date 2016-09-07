@@ -1,10 +1,8 @@
 package de.uniba.myREST.service;
 
-import de.uniba.myREST.engine.AlbumLookup;
-import de.uniba.myREST.engine.ArtistLookup;
-import de.uniba.myREST.engine.TopTracksLookUp;
-import de.uniba.myREST.engine.TrackLookup;
+import de.uniba.myREST.engine.*;
 import de.uniba.myREST.response.ArtistResponse;
+import de.uniba.myREST.response.SimpleArtistResponse;
 import de.uniba.myREST.response.SimpleTrackResponse;
 
 import javax.ws.rs.*;
@@ -66,20 +64,30 @@ public class SpotifyService {
                 .build().toString();
 
         //Adding the Uri link to the list of links//
-        response.addLink(selfUri,"self");
+        response.addLink(selfUri,"linkToself");
 
 
         /*
-         * Building uri link to the top 5 tracks of the artist with Context UriInfo
+         * Building uri link to the top 5 tracks of the given artist with Context UriInfo
          */
         String topTrackUri = uriInfo.getBaseUriBuilder()
                 .path(SpotifyService.class)
                 .path("/topTracks")
-                .queryParam("artistID",ArtistLookup.getArtistFromName(artistName).getArtistId().toString())
+                .queryParam("artistName",artistName)
                 .build().toString();
         //Adding the Uri link to the list of links//
-        response.addLink(topTrackUri,"topFiveTracksForArtist");
+        response.addLink(topTrackUri,"linkToTopFiveTracksForArtist");
 
+        /*
+         * Building uri link to the similar 5 artists of the given artist with Context UriInfo
+         */
+        String similarArtistsUri = uriInfo.getBaseUriBuilder()
+                .path(SpotifyService.class)
+                .path("/similarArtists")
+                .queryParam("artistName",artistName)
+                .build().toString();
+        //Adding the Uri link to the list of links//
+        response.addLink(similarArtistsUri,"linkToFiveSimilarArtists");
 
 
         loggerSpotifyService.info("Class SpotifyService/Method getSpotifyArtistData: Done Logging");
@@ -133,24 +141,24 @@ public class SpotifyService {
     }
 
     /**
-     * Fetches five top tracks for a specific artist
-     * @param artistID {String}
+     * Returns ches five top tracks for a specific artist
+     * @param artistName {String}
      * @return {Response}
      */
     @GET
     @Path("/topTracks")
     @Consumes(TEXT_PLAIN)
     @Produces(APPLICATION_JSON)
-    public Response getSpotifyTopTracksforArtistID(@QueryParam("artistID") String artistID){
+    public Response getSpotifyTopTracksForArtistID(@QueryParam("artistName") String artistName){
         loggerSpotifyService.setLevel(Level.ALL);
         loggerSpotifyService.info("Class SpotifyService/Method getSpotifyTopTracksforArtist: Start Logging");
 
-        if (artistID==null||artistID.equals("")){
+        if (artistName==null||artistName.equals("")){
 
             return Response.status(Response.Status.BAD_REQUEST).entity("Bad Request").build();
         }
 
-        GenericEntity<List<SimpleTrackResponse>> response = new GenericEntity<List<SimpleTrackResponse>>(TopTracksLookUp.getTopFiveTracksforAnArtist(artistID)){};
+        GenericEntity<List<SimpleTrackResponse>> response = new GenericEntity<List<SimpleTrackResponse>>(TopTracksLookUp.getTopFiveTracksforAnArtist(artistName)){};
 
         loggerSpotifyService.info("Class SpotifyService/Method getSpotifyTopTracksforArtist: Done Logging");
 
@@ -158,6 +166,30 @@ public class SpotifyService {
 
     }
 
+    /**
+     * Returns five similar artists for given artist
+     * @param artistName {String}
+     * @return {Response}
+     */
+    @GET
+    @Path("/similarArtists")
+    @Consumes(TEXT_PLAIN)
+    @Produces(APPLICATION_JSON)
+    public Response getSpotifySimilarArtistsForArtist(@QueryParam("artistName") String artistName){
+        loggerSpotifyService.setLevel(Level.ALL);
+        loggerSpotifyService.info("Class SpotifyService/Method getSpotifySimilarArtistsForArtist: Start Logging");
+
+        if(artistName==null || artistName.equals("")){
+
+            return Response.status(Response.Status.BAD_REQUEST).entity("Bad Request").build();
+        }
+
+        GenericEntity<List<SimpleArtistResponse>> response = new GenericEntity<List<SimpleArtistResponse>>(SimilarArtistLookup.getFiveSimilarArtistsForArtist(artistName)){};
+
+        loggerSpotifyService.info("Class SpotifyService/Method getSpotifySimilarArtistsForArtist: Done Logging");
+        return Response.ok(response,MediaType.APPLICATION_JSON).build();
+
+    }
 
 
 

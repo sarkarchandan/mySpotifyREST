@@ -53,7 +53,7 @@ public class TrackLookup {
 
 
         /*
-         * Make the authenticated call to Spotify Web API
+         * Declaring Api object to make the authenticated call to Spotify Web API
          */
         Api api = Api.builder()
                 .accessToken(GetAccessToken.deliverAccessToken())

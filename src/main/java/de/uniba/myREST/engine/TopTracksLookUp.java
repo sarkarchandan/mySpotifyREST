@@ -25,10 +25,10 @@ public class TopTracksLookUp {
 
     /**
      * Retirns Top five track objects for a given artist
-     * @param artistID {String}
+     * @param artistName {String}
      * @return {SimpleTrackResponse}
      */
-    public static List<SimpleTrackResponse> getTopFiveTracksforAnArtist(String artistID){
+    public static List<SimpleTrackResponse> getTopFiveTracksforAnArtist(String artistName){
         loggerTopTracksLookUp.setLevel(Level.ALL);
         loggerTopTracksLookUp.info("Class TopTracksLookUp/Method getTopFiveTracksforAnArtist: Start Logging");
 
@@ -40,16 +40,16 @@ public class TopTracksLookUp {
         SimpleTrackAlbumResponse simpleTrackAlbumResponse;
 
         /*
-         * Make authenticated call to Spotify Api
+         * Declaring Api object to make authenticated call to Spotify Api
          */
         Api api = Api.builder()
                 .accessToken(GetAccessToken.deliverAccessToken())
                 .build();
 
-        if(artistID!=null ||!artistID.equals("")){
+        if(artistName!=null ||!artistName.equals("")){
 
             try {
-                TopTracksRequest topTracksRequest = api.getTopTracksForArtist(artistID, "US").build();
+                TopTracksRequest topTracksRequest = api.getTopTracksForArtist(ArtistLookup.getArtistFromName(artistName).getArtistId().toString(), "US").build();
                 List<Track> topTracks = topTracksRequest.get().subList(0, 5);
 
                 /*
