@@ -12,10 +12,10 @@ At this moment upon searching for an artist, along with the details of the artis
 - A URI to the list of top five tracks of the given artist.
 - A URI to the brief details of five similar artists of the given artist.
 
-##### Ongoing Work:
-Adding these two links creates a possibility for the user to explore more about an Artist but this opens up doors to new possibilities of interactions. Once users get to see the similar artist of the given artist, users may want to explore about the similar artists as well e.g. their top songs or albums and then come back to previous state to name the few.
+### Ongoing Work:
+Adding these two links creates a possibility for the user to explore more about an Artist but this opens up doors to new possibilities of interactions. Once users get to see the similar artist of the given artist, users may want to explore about the similar artists as well e.g. their top songs or albums and then come back to previous state, to name the few.
 
-I am working towards extending from these two basic functionalities for the artist search towards designing a convenient interactive environment where users will be landed in something like a home page with all the new releases from the Spotify and from there users will have flexible options for their probable interaction with the application state. :octocat:
+I am working towards extending from these two basic functionalities for the artist search towards designing a convenient interactive environment where users will be landed in something like a home page with all the new releases from the Spotify and from there users will have flexible options for their probable interactions with the application state. :octocat:
 
 ## Assumption
 - This implementation creates Web Application Archive (.war) file and deploys the same in [Glassfish](https://glassfish.java.net/) container which can be downloaded from the link.
@@ -47,7 +47,9 @@ $ gradle eclipse
 Open the Web Browser or Chrome Advanced REST Client and enter the respective querystrings for te different search parameters. Please refer the examples below:
 
 ##### Artist Search:
+
 Sample Search Query: `http://localhost:8080/spotifyData/artists?artistName=Beatles`
+
 ##### Sample Outcome:
 
 ```
@@ -82,9 +84,13 @@ Sample Search Query: `http://localhost:8080/spotifyData/artists?artistName=Beatl
     }
 }
 ```
+
 ##### Further Interactions with Artist Search
+
 - Follow the link for resourceRelation: "linkToTopFiveTracksForArtist"
+
 ##### Sample Outcome (To avoid a lengthy document we have just shown one sample track response)
+
 ```
 {
 "trackAlbum": {
@@ -101,8 +107,11 @@ Sample Search Query: `http://localhost:8080/spotifyData/artists?artistName=Beatl
 "trackUri": "spotify:track:6dGnYIeXmHdcikdzNNDMm2"
 }-
 ```
+
 - Follow the link for resourceRelation: "linkToFiveSimilarArtists"
+
 ##### Sample Outcome (To avoid a lengthy document we have just shown one sample track response)
+
 ```
 {
 "simpleArtistHref": "https://api.spotify.com/v1/artists/74ASZWbe4lXaubB36ztrGX"
