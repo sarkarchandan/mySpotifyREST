@@ -42,6 +42,13 @@ OR
 $ gradle eclipse
 ```
 - Enter the Client ID and Client Secret to the respective static fields of the **GetAccessToken** class of the package _de.uniba.myREST.engine_
+- Make sure that glassfish server container is running.
+- Build the archive and deploy to the Container.
+
+```sh
+$ gradle build
+$ gradle deploy
+```
 
 ## Sample Executions
 Open the Web Browser or Chrome Advanced REST Client and enter the respective querystrings for te different search parameters. Please refer the examples below:
