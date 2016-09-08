@@ -27,6 +27,9 @@ public class GetAccessToken {
     private static String clientId = "61eb0513e07848a5a3933a55caf26ef4";
     private static String clientSecret = "f6c4608edb0448e78edad58ff2036981";
 
+    /*
+     * Instance variable, the generated access token is going to be assigned to
+     */
     private static String myAccessToken;
 
 

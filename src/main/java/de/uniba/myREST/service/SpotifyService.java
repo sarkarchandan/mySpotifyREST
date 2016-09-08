@@ -2,6 +2,7 @@ package de.uniba.myREST.service;
 
 import de.uniba.myREST.engine.*;
 import de.uniba.myREST.response.ArtistResponse;
+import de.uniba.myREST.response.NewReleaseAlbumResponse;
 import de.uniba.myREST.response.SimpleArtistResponse;
 import de.uniba.myREST.response.SimpleTrackResponse;
 
@@ -187,6 +188,30 @@ public class SpotifyService {
         GenericEntity<List<SimpleArtistResponse>> response = new GenericEntity<List<SimpleArtistResponse>>(SimilarArtistLookup.getFiveSimilarArtistsForArtist(artistName)){};
 
         loggerSpotifyService.info("Class SpotifyService/Method getSpotifySimilarArtistsForArtist: Done Logging");
+        return Response.ok(response,MediaType.APPLICATION_JSON).build();
+
+    }
+
+    /**
+     * Returns desired no of new released albums of Spotify
+     * @param noOfNewReleases {int}
+     * @return {Response}
+     */
+    @GET
+    @Path("/newReleases")
+    @Consumes(TEXT_PLAIN)
+    @Produces(APPLICATION_JSON)
+    public Response getSpotifyNewReleases(@QueryParam("noOfNewReleases") int noOfNewReleases) {
+        loggerSpotifyService.setLevel(Level.ALL);
+        loggerSpotifyService.info("Class SpotifyService/Method getSpotifyNewReleases: Start Logging");
+
+        if (noOfNewReleases <= 0) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Bad Request. Parameter must be greater than 0").build();
+        }
+
+        GenericEntity<List<NewReleaseAlbumResponse>> response = new GenericEntity<List<NewReleaseAlbumResponse>>(SpotifyNewRelease.getNewSpotifyReleases(noOfNewReleases)){};
+
+        loggerSpotifyService.info("Class SpotifyService/Method getSpotifyNewReleases: Done Logging");
         return Response.ok(response,MediaType.APPLICATION_JSON).build();
 
     }

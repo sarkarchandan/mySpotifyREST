@@ -3,6 +3,7 @@ package de.uniba.myREST.engine;
 import com.wrapper.spotify.exceptions.WebApiException;
 import com.wrapper.spotify.models.*;
 import de.uniba.myREST.response.ImageResponse;
+import de.uniba.myREST.response.NewReleaseAlbumResponse;
 import de.uniba.myREST.response.SimpleTrackResponse;
 
 import java.io.IOException;
@@ -36,10 +37,20 @@ public class TestMain {
 
         }
         */
-        System.out.println(TopTracksLookUp.getTopFiveTracksforAnArtist("2ye2Wgw4gimLv2eAKyk1NB"));
+        //System.out.println(TopTracksLookUp.getTopFiveTracksforAnArtist("2ye2Wgw4gimLv2eAKyk1NB"));
 
 
-        System.out.println(ArtistLookup.getArtistFromName("Metallica").getArtistId().toString());
+        //System.out.println(ArtistLookup.getArtistFromName("Metallica").getArtistId().toString());
+
+
+        for (NewReleaseAlbumResponse eachNewRelease: SpotifyNewRelease.getNewSpotifyReleases(5)){
+
+            System.out.println(eachNewRelease.getNewReleaseAlbumId());
+            System.out.println(eachNewRelease.getNewReleaseAlbumName());
+        }
+
+
+
 
 
 

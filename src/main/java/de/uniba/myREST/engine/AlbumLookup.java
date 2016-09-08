@@ -2,12 +2,12 @@ package de.uniba.myREST.engine;
 
 
 import com.wrapper.spotify.Api;
+import com.wrapper.spotify.methods.AlbumRequest;
 import com.wrapper.spotify.methods.AlbumSearchRequest;
-import com.wrapper.spotify.models.Image;
-import com.wrapper.spotify.models.Page;
-import com.wrapper.spotify.models.SimpleAlbum;
+import com.wrapper.spotify.models.*;
 import de.uniba.myREST.response.AlbumResponse;
 import de.uniba.myREST.response.ImageResponse;
+import de.uniba.myREST.response.SimpleArtistResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,10 +42,12 @@ public class AlbumLookup {
          * Declaring reference for AlbumResponse type.
          * Declaring List<String> to contain all the Available Markets for Album. This is required to construct AlbumResponse object.
          * Declaring List<ImageResponse> to contain all the  Images for the Album. This is required to construct AlbumResponse object
+         * Declaring List<SimpleArtistResponse> to contain all the Artists of the Album
          */
         AlbumResponse albumResponse=null;
         List<String> listOfAlbumAvailableMarkets = new ArrayList<>();
         List<ImageResponse> listOfAlbumImages = new ArrayList<>();
+        List<SimpleArtistResponse> listOfAlbumArtists = new ArrayList<>();
 
         /*
          * Declaring Api object to make the authenticated call to Spotify Web API
@@ -63,8 +65,11 @@ public class AlbumLookup {
             try {
                 final Page<SimpleAlbum> albumSearchResult = request.get();
 
+
                 if (albumSearchResult.getItems().size() != 0) {
                     for (SimpleAlbum album : albumSearchResult.getItems()) {
+
+
 
                         /*
                          * Iterating through all Available Markets of the Album to add each Available Market to the List<String> of All Available Markets.
@@ -86,6 +91,30 @@ public class AlbumLookup {
                             ));
                         }
 
+                        /*
+                         * Constructing the List<SimpleArtistResponse> to get the Artist details of the Album.
+                         * We are using Spotify AlbumRequest method here explicitly to include Artist Details in the AlbumResponse.
+                         * Until now we were dealing with the reference type SimpleAlbum which doesn't include Artist Details.
+                         * Here we are getting the original Album reference with the help of SimpleAlbum Id and from there we are getting the Artist Details
+                         */
+                        AlbumRequest customAlbumRequest = api.getAlbum(album.getId())
+                                .build();
+                        Album albumDetails = customAlbumRequest.get();
+                        /*
+                         * Iterating through the list of SimpleArtists for a given Album reference
+                         */
+                        for (SimpleArtist albumArtist: albumDetails.getArtists()){
+
+                            listOfAlbumArtists.add(
+                                    new SimpleArtistResponse(
+                                            albumArtist.getHref(),
+                                            albumArtist.getId(),
+                                            albumArtist.getName(),
+                                            albumArtist.getUri()
+                                    )
+                            );
+                        }
+
                         /* Constructing AlbumResponse object.
                          * This is the final AlbumResponse object which will be serialized to JSON type.
                          */
@@ -96,6 +125,7 @@ public class AlbumLookup {
                                 listOfAlbumImages,
                                 album.getHref(),
                                 album.getName(),
+                                listOfAlbumArtists,
                                 album.getUri()
                                 );
 

@@ -17,6 +17,7 @@ public class AlbumResponse {
     private List<ImageResponse> albumImages;
     private String albumHref;
     private String albumName;
+    private List<SimpleArtistResponse> albumArtists;
     private String uri;
 
 
@@ -28,20 +29,20 @@ public class AlbumResponse {
     public AlbumResponse() {
     }
 
-    public AlbumResponse(String albumId, String albumType, List<String> albumAvailableMarkets, List<ImageResponse> albumImages, String albumHref, String albumName, String uri) {
+    public AlbumResponse(String albumId, String albumType, List<String> albumAvailableMarkets, List<ImageResponse> albumImages, String albumHref, String albumName, List<SimpleArtistResponse> albumArtists, String uri) {
         this.albumId = albumId;
         this.albumType = albumType;
         this.albumAvailableMarkets = albumAvailableMarkets;
         this.albumImages = albumImages;
         this.albumHref = albumHref;
         this.albumName = albumName;
+        this.albumArtists = albumArtists;
         this.uri = uri;
     }
 
-
     /*
-     * Getter and Setter methods for the instance varibales
-     */
+         * Getter and Setter methods for the instance varibales
+         */
     public String getAlbumId() {
         return albumId;
     }
@@ -96,5 +97,13 @@ public class AlbumResponse {
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    public List<SimpleArtistResponse> getAlbumArtists() {
+        return albumArtists;
+    }
+
+    public void setAlbumArtists(List<SimpleArtistResponse> albumArtists) {
+        this.albumArtists = albumArtists;
     }
 }
