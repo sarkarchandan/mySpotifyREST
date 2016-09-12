@@ -15,7 +15,9 @@ At this moment upon searching for an artist, along with the details of the artis
 ### Ongoing Work:
 Adding these two links creates a possibility for the user to explore more about an Artist but this opens up doors to new possibilities of interactions. Once users get to see the similar artist of the given artist, users may want to explore about the similar artists as well e.g. their top songs or albums and then come back to previous state, to name the few.
 
-I am working towards extending from these two basic functionalities for the artist search towards designing a convenient interactive environment where users will be landed in something like a home page with all the new releases from the Spotify and from there users will have flexible options for their probable interactions with the application state. :octocat:
+I am working towards extending from these two basic functionalities for the artist search towards designing a convenient interactive environment where users will be landed in something like a home page with all the new releases from the Spotify and from there users will have flexible options for their probable interactions with the application state.
+
+Additionally, I am in the process of implementing some sort of caching for the resource representations in order to improve the query performance and response. I am thinking to use redis for this purpose. :octocat:
 
 ## Assumption
 - This implementation creates Web Application Archive (.war) file and deploys the same in [Glassfish](https://glassfish.java.net/) container which can be downloaded from the link.
